@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>用户登录</title>
+    <script src="webjars/jquery/3.1.1/jquery.min.js"></script>
+    <script src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css"/>
+    <script th:src="@{/js/angularjs1.4.6.js}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/signin.css}"/>
+    <script type="text/javascript">
+        /*<![CDATA[*/
+        var app = angular.module('app', []);
+        app.controller('LoginController', function ($rootScope, $scope, $http) {
+            $scope.message = '';
+            $scope.username = '';
+            $scope.password = '';
+
+            //登录
+            $scope.submitLogin = function () {
+                $scope.message = '';
+                var username = $scope.username;
+                var password = $scope.password;
+
+                if (username != "" && password != "") {
+                    $http({
+                        url: '/loginPost',
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        data: 'username=' + username + '&password=' + password
+                    }).success(function (r) {
+                        if (!r.success) {
+                            $scope.message = r.message;
+                            return;
+                        }
+                        window.location.href = '/';
+                    });
+                }
+            }
+        });
+        /*]]>*/
+    </script>
+</head>
+<body class="text-center" ng-app="app" ng-controller="LoginController">
+<form class="form-signin">
+    <img class="mb-4" src="/static/icon.jpg" alt="" width="72" height="72"/>
+    <h1 class="h3 mb-3 font-weight-normal">请登录</h1>
+    <label for="inputPhone" class="sr-only">手机号</label>
+    <input type="text" id="inputPhone" ng-model="username"
+           class="form-control" placeholder="手机号"
+           required="required" autofocus="autofocus"/>
+    <label for="inputPassword" class="sr-only">密码</label>
+    <input type="password" id="inputPassword" ng-model="password"
+           class="form-control" placeholder="密码" required="required"/>
+
+    <div class="checkbox mb-3">
+        <label style="color: red;float:left">
+            <text ng-show="message">{{message}}</text>
+        </label>
+        <label style="float:right">
+            <input type="checkbox" value="remember-me"/>记住我
+        </label>
+    </div>
+    <p>&nbsp;</p>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="submitLogin()">登录</button>
+    <div class="checkbox mb-3">
+        <label style="float:left">
+            <a href="/register">注册账号</a>
+        </label>
+        <label style="float:right">
+            <a href="#">找回密码</a>
+        </label>
+    </div>
+    <p>&nbsp;</p>
+    <p class="mt-5 mb-3 text-muted">&copy;2018-2019聚合商品贷</p>
+</form>
+</body>
+
+</html>

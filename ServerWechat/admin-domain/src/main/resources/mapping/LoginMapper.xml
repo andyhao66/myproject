@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wechat.admin.dao.LoginMapper" >
+  <resultMap id="BaseResultMap" type="com.wechat.admin.model.Login" >
+    <id column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+    <result column="real_name" property="realName" jdbcType="VARCHAR" />
+    <result column="id_num" property="idNum" jdbcType="VARCHAR" />
+    <result column="debit_card" property="debitCard" jdbcType="VARCHAR" />
+    <result column="reserved_phone_num" property="reservedPhoneNum" jdbcType="VARCHAR" />
+    <result column="input_date" property="inputDate" jdbcType="TIMESTAMP" />
+    <result column="no_agree" property="noAgree" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_id, phone_num, password, avatar, real_name, id_num, debit_card, reserved_phone_num, 
+    input_date, no_agree
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from jh_login
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+  <!-- 按手机号查找 -->
+  <select id="selectByPhoneNum" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from jh_login
+    where phone_num = #{phoneNum,jdbcType=VARCHAR}
+  </select>
+  <!-- 按身份证号查找 -->
+  <select id="selectByIdNum" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from jh_login
+    where id_num = #{idNum,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from jh_login
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wechat.admin.model.Login" >
+    insert into jh_login (user_id, phone_num, password, 
+      avatar, real_name, id_num, 
+      debit_card, reserved_phone_num, input_date, 
+      no_agree)
+    values (#{userId,jdbcType=BIGINT}, #{phoneNum,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{avatar,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, #{idNum,jdbcType=VARCHAR}, 
+      #{debitCard,jdbcType=VARCHAR}, #{reservedPhoneNum,jdbcType=VARCHAR}, #{inputDate,jdbcType=TIMESTAMP}, 
+      #{noAgree,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wechat.admin.model.Login" >
+    insert into jh_login
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="phoneNum != null" >
+        phone_num,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="avatar != null" >
+        avatar,
+      </if>
+      <if test="realName != null" >
+        real_name,
+      </if>
+      <if test="idNum != null" >
+        id_num,
+      </if>
+      <if test="debitCard != null" >
+        debit_card,
+      </if>
+      <if test="reservedPhoneNum != null" >
+        reserved_phone_num,
+      </if>
+      <if test="inputDate != null" >
+        input_date,
+      </if>
+      <if test="noAgree != null" >
+        no_agree,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="phoneNum != null" >
+        #{phoneNum,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null" >
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="idNum != null" >
+        #{idNum,jdbcType=VARCHAR},
+      </if>
+      <if test="debitCard != null" >
+        #{debitCard,jdbcType=VARCHAR},
+      </if>
+      <if test="reservedPhoneNum != null" >
+        #{reservedPhoneNum,jdbcType=VARCHAR},
+      </if>
+      <if test="inputDate != null" >
+        #{inputDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="noAgree != null" >
+        #{noAgree,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wechat.admin.model.Login" >
+    update jh_login
+    <set >
+      <if test="phoneNum != null" >
+        phone_num = #{phoneNum,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null" >
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="idNum != null" >
+        id_num = #{idNum,jdbcType=VARCHAR},
+      </if>
+      <if test="debitCard != null" >
+        debit_card = #{debitCard,jdbcType=VARCHAR},
+      </if>
+      <if test="reservedPhoneNum != null" >
+        reserved_phone_num = #{reservedPhoneNum,jdbcType=VARCHAR},
+      </if>
+      <if test="inputDate != null" >
+        input_date = #{inputDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="noAgree != null" >
+        no_agree = #{noAgree,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wechat.admin.model.Login" >
+    update jh_login
+    set phone_num = #{phoneNum,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      real_name = #{realName,jdbcType=VARCHAR},
+      id_num = #{idNum,jdbcType=VARCHAR},
+      debit_card = #{debitCard,jdbcType=VARCHAR},
+      reserved_phone_num = #{reservedPhoneNum,jdbcType=VARCHAR},
+      input_date = #{inputDate,jdbcType=TIMESTAMP},
+      no_agree = #{noAgree,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+</mapper>

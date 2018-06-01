@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/ServerWechat.iml" filepath="$PROJECT_DIR$/.idea/ServerWechat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/admin-domain/admin-domain.iml" filepath="$PROJECT_DIR$/admin-domain/admin-domain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/admin-modules/admin-modules.iml" filepath="$PROJECT_DIR$/admin-modules/admin-modules.iml" />
+      <module fileurl="file://$PROJECT_DIR$/admin-modules/thirdparty-module/thirdparty-module.iml" filepath="$PROJECT_DIR$/admin-modules/thirdparty-module/thirdparty-module.iml" />
+    </modules>
+  </component>
+</project>

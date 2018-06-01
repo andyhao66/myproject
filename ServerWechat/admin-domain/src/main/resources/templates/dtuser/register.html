@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>注册账号</title>
+    <script src="webjars/jquery/3.1.1/jquery.min.js"/>
+    <script src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"/>
+    <link rel="stylesheet" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css"/>
+    <script th:src="@{/js/angularjs1.4.6.js}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/signin.css}"/>
+    <script type="text/javascript">
+        /*<![CDATA[*/
+        var app = angular.module('app', []);
+        app.controller('RegisterController', function ($rootScope, $scope, $http) {
+            $scope.message = '';
+
+            //注册
+            $scope.submitRegister = function () {
+                $scope.message = '';
+                var username = $scope.username;
+                var code = $scope.code;
+                var pwd = $scope.password;
+                var pwd2 = $scope.password2;
+                var realName = $scope.realName;
+                var idNum = $scope.idNum;
+                console.log(username + "," + code + "," + pwd + ","
+                        + pwd2 + "," + realName + "," + idNum);
+
+                if ($scope.checkData()) {
+                    $("#sendCodeBtn").attr("disabled", true);
+                    $http({
+                        url: '/registerPost',
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        data: 'username=' + username + '&code=' + code
+                        + '&pwd=' + pwd + '&pwd2=' + pwd2
+                        + '&realName=' + realName + '&idNum=' + idNum
+                    }).success(function (r) {
+                        $scope.message = r.message;
+                        $("#sendCodeBtn").attr("disabled", false);
+                        return;
+                    });
+                }
+            }
+
+            //检查注册提交的信息是否符合要求
+            $scope.checkData = function () {
+                var username = $scope.username;
+                var code = $scope.code;
+                var pwd = $scope.password;
+                var pwd2 = $scope.password2;
+                var realName = $scope.realName;
+                var idNum = $scope.idNum;
+                console.log(username == "");
+                console.log(typeof(username) == "undefined");
+                if(typeof(username) == "undefined" || typeof(code) == "undefined" ||
+                        typeof(pwd) == "undefined" || typeof(pwd2) == "undefined" ||
+                        typeof(realName) == "undefined" || typeof(idNum) == "undefined"){
+                    return false;
+                }else if (username == "" || code == "" || pwd == "" || pwd2 == ""
+                        || realName == "" || idNum == "") {
+                    return false;
+                } else if (username.length != 11) {
+                    $scope.message = '请填写正确的手机号';
+                    return false;
+                } else if (code.length != 4) {
+                    $scope.message = '请填写正确的验证码';
+                    return false;
+                } else if (pwd != pwd2) {
+                    $scope.message = '两次密码输入不符';
+                    return false;
+                }
+                return true;
+            }
+
+            //发送验证码
+            $scope.sendCode = function () {
+                $scope.message = '';
+                var username = $scope.username;
+                console.log(username);
+                if (typeof(username) == "undefined" && username != ""
+                        && username.length == 11) {
+                    $("#sendCodeBtn").attr("disabled", true);
+                    $http({
+                        url: '/registerSendCode',
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        data: 'phonenum=' + username
+                    }).success(function (r) {
+                        console.log(r);
+                        $scope.message = r.message;
+                        return;
+                        //window.location.href = '/';
+                    });
+                }
+            }
+        });
+        /*]]>*/
+    </script>
+</head>
+<body class="text-center" ng-app="app" ng-controller="RegisterController">
+<from class="form-signin">
+    <img class="mb-4" src="/static/icon.jpg" alt="" width="72" height="72"/>
+    <h1 class="h3 mb-3 font-weight-normal">用户注册</h1>
+    <label for="inputPhone" class="sr-only">手机号</label>
+    <input type="text" id="inputPhone" ng-model="username"
+           class="form-control" placeholder="手机号"
+           required="required" autofocus="autofocus"/>
+    <button class="btn btn-lg btn-info btn-block" type="button" id="sendCodeBtn"
+            ng-click="sendCode()">发送验证码
+    </button>
+    <label for="inputCode" class="sr-only">短信验证码</label>
+    <input type="text" id="inputCode" ng-model="code"
+           class="form-control" placeholder="短信验证码" required="required"/>
+    <label for="inputPassword" class="sr-only">登录密码</label>
+    <input type="password" id="inputPassword" ng-model="password"
+           class="form-control" placeholder="登录密码" required="required"/>
+    <label for="inputPwd2" class="sr-only">再次输入登录密码</label>
+    <input type="password" id="inputPwd2" ng-model="password2"
+           class="form-control" placeholder="再次输入登录密码" required="required"/>
+    <label for="inputRealName" class="sr-only">真实姓名</label>
+    <input type="text" id="inputRealName" ng-model="realName"
+           class="form-control" placeholder="真实姓名" required="required"/>
+    <label for="inputIdNum" class="sr-only">身份证号</label>
+    <input type="text" id="inputIdNum" ng-model="idNum"
+           class="form-control" placeholder="身份证号" required="required"/>
+    <label style="color: red;">
+        <text ng-show="message">{{message}}</text>
+    </label>
+    <button class="btn btn-lg btn-success btn-block" type="submit" id="registerBtn"
+            ng-click="submitRegister()">注册
+    </button>
+    <div class="checkbox mb-3">
+        <label style="float:left">
+            <a href="/login">返回登录</a>
+        </label>
+        <label style="float:right">
+            <a href="#">找回密码</a>
+        </label>
+    </div>
+    <p>&nbsp;</p>
+    <p class="mt-5 mb-3 text-muted">&copy;2018-2019聚合商品贷</p>
+</from>
+</body>
+
+</html>
